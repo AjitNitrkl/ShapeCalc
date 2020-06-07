@@ -5,16 +5,30 @@ import com.sample.test.model.Rectangle;
 import com.sample.test.model.Shape;
 import com.sample.test.util.ShapeHelper;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainApp {
 
     public static void main(String[] args) throws Exception {
-            if(!(args.length == 1 && args[0].equals("testdata.csv")))
-                throw new IllegalStateException("Application need an argument only 1 as " +
-                        " testdata.csv as the arg");
 
-            List<Shape> shapes = ShapeHelper.supplierFun.get();
+             List<Shape> shapes = new ArrayList<Shape>();
+             if(args.length>1 )
+                 throw new IllegalStateException("Application need an argument only 1 as " +
+                " testdata.csv as the arg");
+             else if((args.length == 1 )) {
+                 File f = new File(args[0]);
+                 if(f.exists() && f.getName().equals("testdata.csv"))
+                    shapes = ShapeHelper.readFileFun.apply(args[0]);
+                 else {
+                     System.out.println("File may not exist or the naming pattern is invalid so loading the default file ");
+                     shapes = ShapeHelper.supplierFun.get();
+                 }
+             }else{
+                 shapes = ShapeHelper.supplierFun.get();
+             }
+
             findShapeIndex(null, shapes);
             printShapes(shapes);
             sortByArea(shapes);
