@@ -84,7 +84,7 @@ public class ShapeHelper {
         try (InputStream inputStream = new FileInputStream(file);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
              shapes = getListofShapes(reader);
-        }catch(Exception e){
+        }catch(IOException e){
             e.printStackTrace(); //should not use printstack trace rather logger(log4j/logback) should be used
             throw new IllegalStateException("File not present");
         }
