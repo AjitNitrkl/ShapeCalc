@@ -6,10 +6,7 @@ import com.sample.test.model.Shape;
 import com.sample.test.model.ShapeType;
 import com.sample.test.model.factory.ShapeFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,15 +71,32 @@ public class ShapeHelper {
         List<Shape> shapes = new ArrayList<Shape>();
         try (InputStream inputStream = ShapeHelper.class.getResourceAsStream("/data.csv");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            shapes =  reader.lines().skip(1)
-                    .map(mapToShapeFun)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toList());
+            shapes= getListofShapes(reader);
         }catch(IOException e){
             e.printStackTrace(); //should not use printstack trace rather logger(log4j/logback) should be used
             throw new IllegalStateException("File not present");
         }
         return shapes;
     };
+
+    public static Function<String, List<Shape>> readFileFun = (file) ->{
+        List<Shape> shapes = new ArrayList<Shape>();
+        try (InputStream inputStream = new FileInputStream(file);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+             shapes = getListofShapes(reader);
+        }catch(Exception e){
+            e.printStackTrace(); //should not use printstack trace rather logger(log4j/logback) should be used
+            throw new IllegalStateException("File not present");
+        }
+        return shapes;
+    };
+
+    private static List<Shape> getListofShapes(BufferedReader reader) {
+        return reader.lines().skip(1)
+                .map(mapToShapeFun)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
 }
