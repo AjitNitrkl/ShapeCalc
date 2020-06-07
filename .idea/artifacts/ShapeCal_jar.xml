@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ShapeCal:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ShapeCal_jar</output-path>
+    <root id="archive" name="ShapeCal.jar">
+      <element id="module-output" name="Runner" />
+    </root>
+  </artifact>
+</component>
